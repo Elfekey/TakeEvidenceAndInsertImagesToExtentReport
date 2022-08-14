@@ -15,10 +15,17 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import Tests.BaseTest;
 import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class EvidenceAndScreenShots  extends BaseTest {
 
@@ -26,9 +33,12 @@ public class EvidenceAndScreenShots  extends BaseTest {
 	//to set screenshots folder name and it's path for example D:/screenshots/.
 	//or we can type "." then folder name to create it in the project directory
 	//the below will create the folder in the project directory
-	private String screenshotsFolderNameAndPath = "./screenshots/";//you have just to provide the location and foldername
-	private String fullDirectory = System.getProperty("user.dir") + "/" + screenshotsFolderNameAndPath + "/";//i have to add ###test name and "/"##
+	private String screenshotsFolderName = "/screenshots/";//you have just to provide the location and foldername
+	private String fullDirectory = System.getProperty("user.dir") + "/" + screenshotsFolderName + "/";//i have to add ###test name and "/"##
 	private static String currentDateAndTime;
+	//to use it in renaming the folder after test and to name the word file too !! if it's passed twice it'll take all the runs ect....
+	private static String lastTimeOfTestCase;
+
 	/**
 	 * Takes screenshot of whole page and uses the current date/time as the file name
 	 * LAST SHAPE
@@ -37,7 +47,7 @@ public class EvidenceAndScreenShots  extends BaseTest {
 	 * ## to use it in normal @test method  As Below :
 	 evidenceAndScreenShots.takeFullScreenshot(testName,testDescription);
 	 */
-	public void takeFullScreenshot(String testCaseNameOnlyToCreateFolderForIt,String testcaseDescripion) {
+	public synchronized void takeFullScreenshot(String testCaseNameOnlyToCreateFolderForIt,String testcaseDescripion) {
 		//taking the screenshot
 		TakesScreenshot screenshot = (TakesScreenshot) driver;
 		File file = screenshot.getScreenshotAs(OutputType.FILE);
@@ -45,7 +55,7 @@ public class EvidenceAndScreenShots  extends BaseTest {
 			// add the folder path and screenshot name
 			// i added the screen shot status with the path to make folder fo each run of each test case run
 			//the first part untill "/" is for the folder path after that is the screenshot name
-			FileUtils.copyFile(file, new File(screenshotsFolderNameAndPath + testCaseNameOnlyToCreateFolderForIt + "_"+testcaseDescripion+ "/" + testCaseNameOnlyToCreateFolderForIt + "_" + testcaseDescripion + "_" + GetCurrenDateAndTime() + ".png"));
+			FileUtils.copyFile(file, new File(fullDirectory + testCaseNameOnlyToCreateFolderForIt + "_"+testcaseDescripion+ "/" + testCaseNameOnlyToCreateFolderForIt + "_" + testcaseDescripion + "_" + GetCurrenDateAndTime() + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -60,7 +70,7 @@ public class EvidenceAndScreenShots  extends BaseTest {
 	evidenceAndScreenShots.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
      * */
 	//i added the status to take images from every folder with it's status
-	public void saveAllScreenShotsIntoWordDocument(String itestListenerDOTgetName, String testcaseDescription, String status) {
+	public synchronized void saveAllScreenShotsIntoWordDocument(String itestListenerDOTgetName, String testcaseDescription, String status) {
 		try {
 			// Create the docx object
 			// Step 1: Creating a blank document
@@ -75,10 +85,12 @@ public class EvidenceAndScreenShots  extends BaseTest {
 			// document at the required location
 			//the below location must be declared before ,,,i did it when i take the screenshots
 			FileOutputStream fos = new FileOutputStream(
-					new File(screenshotsFolderNameAndPath + itestListenerDOTgetName + "_" + testcaseDescription + "_" + status + "_" + GetCurrenDateAndTime() + ".docx"));//right place with right test name
+//					new File(screenshotsFolderNameAndPath + itestListenerDOTgetName + "_" + testcaseDescription + "_" + status + "_" + GetCurrenDateAndTime() + ".docx"));//right place with right test name
+					new File(fullDirectory + itestListenerDOTgetName + "_" + testcaseDescription + "_" + status + "_" + lastTimeOfTestCase + ".docx"));//right place with right test name
+
 			// Step 4 : Get the source folder and list of files (includes images and
 			// sub-folders)   where we get the images
-			File imagesSrcFilePath = new File(fullDirectory +itestListenerDOTgetName+"_"+testcaseDescription+"_"+status);
+			File imagesSrcFilePath = new File(fullDirectory +itestListenerDOTgetName+"_"+testcaseDescription+"_"+status+"_"+lastTimeOfTestCase);
 
 			//array of files to get the list of items inside the src folder path
 			File[] list = imagesSrcFilePath.listFiles();
@@ -127,11 +139,12 @@ public class EvidenceAndScreenShots  extends BaseTest {
 
 
 //changeing the fodler name to the folder with status name
-	public void renameScreenShotsFolder(String itestListenerDOTgetName, String testcaseDescription, String status){
+	public synchronized void renameScreenShotsFolder(String itestListenerDOTgetName, String testcaseDescription, String status){
+		lastTimeOfTestCase = GetCurrenDateAndTime();
 		//getting the old folder directory and it's name
 		File oldName = new File(fullDirectory+itestListenerDOTgetName+"_"+testcaseDescription);
 		//creating new folder name and directory
-		File newName = new File(fullDirectory+itestListenerDOTgetName+"_"+testcaseDescription+"_"+status);
+		File newName = new File(fullDirectory+itestListenerDOTgetName+"_"+testcaseDescription+"_"+status+"_"+lastTimeOfTestCase);
         //if the old name is exist then rename it to the new name we created
 		if (oldName.renameTo(newName)) {
 			//after renaming success print this
@@ -144,7 +157,105 @@ public class EvidenceAndScreenShots  extends BaseTest {
 
 
 	}
+	
+//extent report initiation 
+//	variables
+    /*we'll need the below dependency
+    <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+   <dependency>
+     <groupId>com.aventstack</groupId>
+     <artifactId>extentreports</artifactId>
+     <version>5.0.9</version>
+   </dependency>
+   * */
+	public ExtentSparkReporter htmlReporter;
+   public  static ExtentReports extent;
+   public static ExtentTest test;
+	//methods
+   /*##############
+   In a nutshell,
 
+   1-The ExtentHtmlReporter or "ExtentSparkReporter"  class is used for creating the HTML reports with it's configurations .
+   2-The ExtentReports class is used for creating the tests.
+   3-The ExtentTest class is used for generating the logs in the Extent Report.
+*/
+   //global driver for only the report 
+   public static WebDriver driver_extent;
+	public synchronized void setUpExtent() {
+		  /*The ExtentHtmlReporter is used for creating an HTML file, and it accepts a file path as a parameter.
+	    The file path represents the path in which our extent report would be generated.
+	    *#also to it's object we set the configuration of the report html page
+	    * */
+//	    ExtentHtmlReporter htmlReporter =  new ExtentHtmlReporter(System.getProperty("user.dir")+"/Reports/extentReport.html");
+		
+	        htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/extentReport.html");
+//	    ExtentReports
+	//   The ExtentReports class is used for creating the tests.
+	        extent = new ExtentReports();
+	        extent.attachReporter(htmlReporter);
+
+	        htmlReporter.config().setDocumentTitle("Automation Report");
+	        htmlReporter.config().setReportName("report Name");
+//	        htmlReporter.config().setTimeStampFormat("EEEE, dd  MMMM , yyyy, hh:mm a '('zzz')'");
+	        htmlReporter.config().setTimeStampFormat("EEEE, dd  MMMM , yyyy, hh:mm a ");
+	        htmlReporter.config().setTheme(Theme.STANDARD);//Theme.DARK   or  Theme.STANDARD
+
+	        
+	        driver_extent = new ChromeDriver();
+	        driver_extent.manage().window().maximize();
+//	    	//openning the report
+			extent.flush();
+			//using the report driver 
+			driver_extent.get("file:"+System.getProperty("user.dir")+"/Reports/extentReport.html");
+		
+	}
+	
+	//Openning the report in before suite 
+	/*
+	 * 	driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("file:"+System.getProperty("user.dir")+"/Reports/extentReport.html");
+		*/
+	
+	//we can take the below from the screenshots evidence class object
+    public  void InsertAllImagesToTheReport(String itestListenerDOTgetName, String testcaseDescription, String status) {
+        // sub-folders)   where we get the images
+        File imagesSrcFilePath = new File(fullDirectory +itestListenerDOTgetName+"_"+testcaseDescription+"_"+status+"_"+lastTimeOfTestCase);
+        //to use it to get screenshot name after it below
+       String imagesPath = fullDirectory + itestListenerDOTgetName +"_"+testcaseDescription+"_"+status+"_"+lastTimeOfTestCase+"/";
+        //array of files to get the list of items inside the src folder path
+        File[] list = imagesSrcFilePath.listFiles();
+
+        //Step 5 : printing the number of found items
+        System.out.println("Source folder item list " + list.length);
+
+        // Step 6 : Iterate through the files in the source folder
+        for (int images = 0; images < list.length; images++) {
+            if (list[images].isFile()) {
+                System.out.println("Found File name - : " + list[images].getName());
+
+                test.addScreenCaptureFromPath(imagesPath+list[images].getName());
+
+            }
+
+        }
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*The below is how to use it in normal  test class
 
 -----------test method

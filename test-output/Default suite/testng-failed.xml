@@ -3,14 +3,15 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Tests.t1">
+      <class name="Tests.Tests">
         <methods>
-          <include name="close"/>
-          <include name="TC002"/>
-          <include name="beforeSuite"/>
-          <include name="beforemethods"/>
+          <include name="afterSuite"/>
+          <include name="after"/>
+          <include name="beforeMethod"/>
+          <include name="TestCaseTwo"/>
+          <include name="SetUpExtentReport"/>
         </methods>
-      </class> <!-- Tests.t1 -->
+      </class> <!-- Tests.Tests -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

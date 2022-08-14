@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite thread-count="2" parallel="classes" name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
-  <test thread-count="2" parallel="classes" name="Test(failed)">
+<suite thread-count="2" parallel="methods" name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="2" parallel="methods" name="Test(failed)">
     <classes>
-      <class name="Tests.t1">
+      <class name="Tests.testParalel">
         <methods>
-          <include name="TestCaseNo3"/>
-          <include name="close"/>
-          <include name="beforeSuite"/>
-          <include name="beforemethods"/>
+          <include name="TestCaseThree"/>
+          <include name="beforemethod"/>
+          <include name="TestCaseTwo"/>
+          <include name="after"/>
         </methods>
-      </class> <!-- Tests.t1 -->
+      </class> <!-- Tests.testParalel -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

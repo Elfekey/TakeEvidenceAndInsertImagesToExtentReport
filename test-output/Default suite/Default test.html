@@ -57,9 +57,9 @@ function toggleAllBoxes() {
 <tr>
 <td>Tests passed/Failed/Skipped:</td><td>0/1/0</td>
 </tr><tr>
-<td>Started on:</td><td>Sun Aug 14 18:24:17 EET 2022</td>
+<td>Started on:</td><td>Sun Aug 28 03:31:30 EET 2022</td>
 </tr>
-<tr><td>Total time:</td><td>22 seconds (22625 ms)</td>
+<tr><td>Total time:</td><td>6 seconds (6695 ms)</td>
 </tr><tr>
 <td>Included groups:</td><td></td>
 </tr><tr>
@@ -75,13 +75,10 @@ function toggleAllBoxes() {
 <td><b>Instance</b></td>
 </tr>
 <tr>
-<td title='Tests.Tests.TestCaseTwo()'><b>TestCaseTwo</b><br>Test class: Tests.Tests<br>Test method: This test case Two now</td>
-<td><div><pre>java.lang.AssertionError: expected [true] but found [false]
-	at org.testng.Assert.fail(Assert.java:99)
-	at org.testng.Assert.failNotEquals(Assert.java:1037)
-	at org.testng.Assert.assertTrue(Assert.java:45)
-	at org.testng.Assert.assertTrue(Assert.java:55)
-	at Tests.Tests.TestCaseTwo(Tests.java:80)
+<td title='Tests.testing.testCase()'><b>testCase</b><br>Test class: Tests.testing</td>
+<td><div><pre>java.lang.NullPointerException
+	at Utilities.screenShots.takeFullScreenshot(screenShots.java:37)
+	at Tests.testing.testCase(testing.java:19)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -110,13 +107,10 @@ function toggleAllBoxes() {
 	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-</pre></div><a href='#' onClick='toggleBox("stack-trace1136612247", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
-<div class='stack-trace' id='stack-trace1136612247'><pre>java.lang.AssertionError: expected [true] but found [false]
-	at org.testng.Assert.fail(Assert.java:99)
-	at org.testng.Assert.failNotEquals(Assert.java:1037)
-	at org.testng.Assert.assertTrue(Assert.java:45)
-	at org.testng.Assert.assertTrue(Assert.java:55)
-	at Tests.Tests.TestCaseTwo(Tests.java:80)
+</pre></div><a href='#' onClick='toggleBox("stack-trace442205321", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace442205321'><pre>java.lang.NullPointerException
+	at Utilities.screenShots.takeFullScreenshot(screenShots.java:37)
+	at Tests.testing.testCase(testing.java:19)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -146,8 +140,8 @@ function toggleAllBoxes() {
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 </pre></div></td>
-<td>11</td>
-<td>Tests.Tests@3d6f0054</td></tr>
+<td>6</td>
+<td>Tests.testing@6631f5ca</td></tr>
 </table><p>
 </body>
 </html>

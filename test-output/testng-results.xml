@@ -1,39 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="2" total="3" passed="0" failed="1" skipped="0">
+<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-08-14T18:24:17 EET" name="Default suite" finished-at="2022-08-14T18:24:39 EET" duration-ms="22625">
+  <suite started-at="2022-08-28T03:31:30 EET" name="Default suite" finished-at="2022-08-28T03:31:37 EET" duration-ms="6695">
     <groups>
     </groups>
-    <test started-at="2022-08-14T18:24:17 EET" name="Default test" finished-at="2022-08-14T18:24:39 EET" duration-ms="22625">
-      <class name="Tests.Tests">
-        <test-method is-config="true" signature="SetUpExtentReport()[pri:0, instance:Tests.Tests@3d6f0054]" started-at="2022-08-14T18:24:00 EET" name="SetUpExtentReport" finished-at="2022-08-14T18:24:17 EET" duration-ms="17071" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- SetUpExtentReport -->
-        <test-method is-config="true" signature="beforeMethod(org.testng.ITestResult)[pri:0, instance:Tests.Tests@3d6f0054]" started-at="2022-08-14T18:24:17 EET" name="beforeMethod" finished-at="2022-08-14T18:24:21 EET" duration-ms="4604" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name={null} status=CREATED method=Tests.TestCaseTwo()[pri:0, instance:Tests.Tests@3d6f0054] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- beforeMethod -->
-        <test-method signature="TestCaseTwo()[pri:0, instance:Tests.Tests@3d6f0054]" started-at="2022-08-14T18:24:21 EET" name="TestCaseTwo" description="This test case Two now" finished-at="2022-08-14T18:24:33 EET" duration-ms="11840" status="FAIL">
-          <exception class="java.lang.AssertionError">
-            <message>
-              <![CDATA[expected [true] but found [false]]]>
-            </message>
+    <test started-at="2022-08-28T03:31:30 EET" name="Default test" finished-at="2022-08-28T03:31:37 EET" duration-ms="6695">
+      <class name="Tests.testing">
+        <test-method signature="testCase()[pri:0, instance:Tests.testing@6631f5ca]" started-at="2022-08-28T03:31:30 EET" name="testCase" finished-at="2022-08-28T03:31:37 EET" duration-ms="6639" status="FAIL">
+          <exception class="java.lang.NullPointerException">
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: expected [true] but found [false]
-at org.testng.Assert.fail(Assert.java:99)
-at org.testng.Assert.failNotEquals(Assert.java:1037)
-at org.testng.Assert.assertTrue(Assert.java:45)
-at org.testng.Assert.assertTrue(Assert.java:55)
-at Tests.Tests.TestCaseTwo(Tests.java:80)
+              <![CDATA[java.lang.NullPointerException
+at Utilities.screenShots.takeFullScreenshot(screenShots.java:37)
+at Tests.testing.testCase(testing.java:19)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -64,26 +43,11 @@ at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 ]]>
             </full-stacktrace>
-          </exception> <!-- java.lang.AssertionError -->
+          </exception> <!-- java.lang.NullPointerException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TestCaseTwo -->
-        <test-method is-config="true" signature="after(org.testng.ITestResult)[pri:0, instance:Tests.Tests@3d6f0054]" started-at="2022-08-14T18:24:33 EET" name="after" finished-at="2022-08-14T18:24:39 EET" duration-ms="6112" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=TestCaseTwo status=FAILURE method=Tests.TestCaseTwo()[pri:0, instance:Tests.Tests@3d6f0054] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- after -->
-        <test-method is-config="true" signature="afterSuite()[pri:0, instance:Tests.Tests@3d6f0054]" started-at="2022-08-14T18:24:39 EET" name="afterSuite" finished-at="2022-08-14T18:24:40 EET" duration-ms="642" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- afterSuite -->
-      </class> <!-- Tests.Tests -->
+        </test-method> <!-- testCase -->
+      </class> <!-- Tests.testing -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

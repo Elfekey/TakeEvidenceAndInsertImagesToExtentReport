@@ -51,7 +51,7 @@
               <ul>
                 <li>
                   <a href="#" panel-name="test-xml-Default_suite" class="navigator-link ">
-                    <span>C:\Users\SayedH3\AppData\Local\Temp\testng-eclipse-1136131802\testng-customsuite.xml</span>
+                    <span>testng-customsuite.xml</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
@@ -104,7 +104,7 @@
                     <div class="method-list-content failed suite-Default_suite">
                       <span>
                         <img src="failed.png" width="3%"/>
-                        <a href="#" panel-name="suite-Default_suite" title="Tests.Tests" class="method navigator-link" hash-for-method="TestCaseTwo">TestCaseTwo</a> <!-- method navigator-link -->
+                        <a href="#" panel-name="suite-Default_suite" title="Tests.testing" class="method navigator-link" hash-for-method="testCase">testCase</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                     </div> <!-- method-list-content failed suite-Default_suite -->
@@ -122,20 +122,17 @@
           <div class="suite-Default_suite-class-failed">
             <div class="main-panel-header rounded-window-top">
               <img src="failed.png"/>
-              <span class="class-name">Tests.Tests</span>
+              <span class="class-name">Tests.testing</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
               <div class="method">
                 <div class="method-content">
-                  <a name="TestCaseTwo">
-                  </a> <!-- TestCaseTwo -->
-                  <span class="method-name">TestCaseTwo</span>
-                  <div class="stack-trace">java.lang.AssertionError: expected [true] but found [false]
-	at org.testng.Assert.fail(Assert.java:99)
-	at org.testng.Assert.failNotEquals(Assert.java:1037)
-	at org.testng.Assert.assertTrue(Assert.java:45)
-	at org.testng.Assert.assertTrue(Assert.java:55)
-	at Tests.Tests.TestCaseTwo(Tests.java:80)
+                  <a name="testCase">
+                  </a> <!-- testCase -->
+                  <span class="method-name">testCase</span>
+                  <div class="stack-trace">java.lang.NullPointerException
+	at Utilities.screenShots.takeFullScreenshot(screenShots.java:37)
+	at Tests.testing.testCase(testing.java:19)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -166,8 +163,6 @@
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 
 </div> <!-- stack-trace -->
-                  <em>
-(This test case Two now)                  </em>
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
@@ -175,7 +170,7 @@
         </div> <!-- panel Default_suite -->
         <div panel-name="test-xml-Default_suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">C:\Users\SayedH3\AppData\Local\Temp\testng-eclipse-1136131802\testng-customsuite.xml</span>
+            <span class="header-content">/private/var/folders/g_/9jzwnrxd4g9fkh9dmy68w9hh0000gn/T/testng-eclipse-1255010483/testng-customsuite.xml</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <pre>
@@ -184,11 +179,11 @@
 &lt;suite name=&quot;Default suite&quot; guice-stage=&quot;DEVELOPMENT&quot;&gt;
   &lt;test thread-count=&quot;5&quot; name=&quot;Default test&quot; verbose=&quot;2&quot;&gt;
     &lt;classes&gt;
-      &lt;class name=&quot;Tests.Tests&quot;&gt;
+      &lt;class name=&quot;Tests.testing&quot;&gt;
         &lt;methods&gt;
-          &lt;include name=&quot;TestCaseTwo&quot;/&gt;
+          &lt;include name=&quot;testCase&quot;/&gt;
         &lt;/methods&gt;
-      &lt;/class&gt; &lt;!-- Tests.Tests --&gt;
+      &lt;/class&gt; &lt;!-- Tests.testing --&gt;
     &lt;/classes&gt;
   &lt;/test&gt; &lt;!-- Default test --&gt;
 &lt;/suite&gt; &lt;!-- Default suite --&gt;
@@ -230,14 +225,14 @@ data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
 data.addRows(1);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'TestCaseTwo')
-data.setCell(0, 2, 'Tests.Tests')
-data.setCell(0, 3, 11840);
+data.setCell(0, 1, 'testCase')
+data.setCell(0, 2, 'Tests.testing')
+data.setCell(0, 3, 6639);
 window.suiteTableData['Default_suite']= { tableData: data, tableDiv: 'times-div-Default_suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 11 seconds</span>
+              <span class="suite-total-time">Total running time: 6 seconds</span>
               <div id="times-div-Default_suite">
               </div> <!-- times-div-Default_suite -->
             </div> <!-- times-div -->
@@ -252,18 +247,9 @@ return data;
         </div> <!-- panel -->
         <div panel-name="ignored-methods-Default_suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">2 ignored methods</span>
+            <span class="header-content">0 ignored methods</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
-            <div class="ignored-class-div">
-              <span class="ignored-class-name">Tests.Tests</span>
-              <div class="ignored-methods-div">
-                <span class="ignored-method-name">TestCaseThree</span>
-                <br/>
-                <span class="ignored-method-name">TestCaseOne</span>
-                <br/>
-              </div> <!-- ignored-methods-div -->
-            </div> <!-- ignored-class-div -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
         <div panel-name="chronological-Default_suite" class="panel">
@@ -272,29 +258,13 @@ return data;
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <div class="chronological-class">
-              <div class="chronological-class-name">Tests.Tests</div> <!-- chronological-class-name -->
-              <div class="configuration-suite before">
-                <span class="method-name">SetUpExtentReport</span>
-                <span class="method-start">0 ms</span>
-              </div> <!-- configuration-suite before -->
-              <div class="configuration-method before">
-                <span class="method-name">beforeMethod([TestResult name={null} status=CREATED method=Tests.TestCaseTwo()[pri:0, instance:Tests.Tests@3d6f00...)</span>
-                <span class="method-start">17131 ms</span>
-              </div> <!-- configuration-method before -->
+              <div class="chronological-class-name">Tests.testing</div> <!-- chronological-class-name -->
               <div class="test-method">
                 <img src="failed.png">
                 </img>
-                <span class="method-name">TestCaseTwo</span>
-                <span class="method-start">21737 ms</span>
+                <span class="method-name">testCase</span>
+                <span class="method-start">0 ms</span>
               </div> <!-- test-method -->
-              <div class="configuration-method after">
-                <span class="method-name">after([TestResult name=TestCaseTwo status=FAILURE method=Tests.TestCaseTwo()[pri:0, instance:Tests.Tests@3...)</span>
-                <span class="method-start">33583 ms</span>
-              </div> <!-- configuration-method after -->
-              <div class="configuration-suite after">
-                <span class="method-name">afterSuite</span>
-                <span class="method-start">39753 ms</span>
-              </div> <!-- configuration-suite after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
       </div> <!-- main-panel-root -->

@@ -1,139 +1,177 @@
 package Tests;
 
-import Utilities.EvidenceAndScreenShots;
+import org.testng.annotations.Test;
+import Utilities.WordDocumentEvidence;
+import Utilities.extentReport;
+import Utilities.retryFailedTCs;
+import Utilities.screenShots;
+
 import org.testng.Assert;
-import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+import com.aventstack.extentreports.Status;
 
-//packages imports
-import Pages.GooglePage;
-import Utilities.ScreenShotsListener;
 
 //Listeners imports
 //@Listeners(ScreenShotsListener.class)
 
+
 public class t1  extends BaseTest   {
-	GooglePage oGooglePage;
- EvidenceAndScreenShots evidenceAndScreenShots ;
+	/*we'll need the below dependency
+    <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+   <dependency>
+     <groupId>com.aventstack</groupId>
+     <artifactId>extentreports</artifactId>
+     <version>5.0.9</version>
+   </dependency>
+	 * */
+	//global varibles
+	public static String tCName ;
+	public static String tCDescription;	
+	//classes objects that we'll use
+	screenShots screenShotOb;
+	extentReport report;
+	WordDocumentEvidence wordDocumentEvidence;
+
+
 
 	@BeforeSuite
-	public void beforeSuite() {
+	public synchronized void beforeSuite() {
 		setupSuite();
+		report = new extentReport();
+		report.setUpExtent();
+		report.open_reportPage();
+
 	}
+
 	@BeforeMethod
-	public void beforemethods() {
-		setUpmethod();
+	public synchronized void beforeMethod(ITestResult result) {
+//		setUpmethod();
+//		setUplistener();
+
+		//creating the test for the report
+		report.startTest(result.getMethod().getMethodName(),result.getMethod().getDescription());
+
+		//getting tc name and description
+		tCName =result.getMethod().getMethodName();
+		tCDescription=result.getMethod().getDescription();
 	}
 
+	@Test(description = "This is test case one now")
+	public void TestCaseOne() {
+		SetUpDriver();
+		setUplistener();
+		
+			//		screenShotOb= new screenShots();
+			//		screenShotOb.takeFullScreenshot(testName,testDescription);
+			//		report.test.log(Status.PASS, "First Screen Ok")
+			eDriver.navigate().to("https://www.lambdatest.com/blog/extent-reports-in-selenium/");
+			//		screenShotOb.takeFullScreenshot(testName,testDescription);
+			//		report.test.log(Status.PASS, "Second Screen Ok");
+			eDriver.navigate().to("https://www.google.com/?client=safari");
+			//		screenShotOb.takeFullScreenshot(testName,testDescription);
+			//		report.test.log(Status.PASS, "Third Screen Ok");
+	
 
-//will pass
-	@Test(priority = 1,description ="Test Case One Say Hi" )
-	public void TC001() throws InterruptedException {
-		evidenceAndScreenShots= new EvidenceAndScreenShots();
-		//getting the current test name
-		String testName =new Object(){}.getClass().getEnclosingMethod().getName() ;
-		// because the parameter for @ must be constant
-		String testDescription ="Test Case One Say Hi";
-
-		oGooglePage= new GooglePage(driver);
-		evidenceAndScreenShots.takeFullScreenshot(testName,testDescription);
-		driver.get("https://www.google.com");
-		evidenceAndScreenShots.takeFullScreenshot(testName,testDescription);
-		driver.manage().window().maximize();
-		evidenceAndScreenShots.takeFullScreenshot(testName,testDescription);
-		oGooglePage.TestCase("Hi");
-		evidenceAndScreenShots.takeFullScreenshot(testName,testDescription);
-//		Assert.assertTrue(false);
-
-
-
-		//trying rename folder
 	}
-//will fail
-	@Test(priority = 2,description = "Test CAse Two Saying Hello2")
-	public void TC002() throws InterruptedException {
-		//Mandatory for screenshots
-//----------------------------------------------------------------------
-		//object from used methods class
-		evidenceAndScreenShots= new EvidenceAndScreenShots();
-		//getting the current test name
-		String testName =new Object(){}.getClass().getEnclosingMethod().getName() ;
-		// because the parameter for @ must be constant
-		String testDescription ="Test CAse Two Saying Hello2";
-//----------------------------------------------------------------------
-		driver.manage().window().maximize();
-		evidenceAndScreenShots.takeFullScreenshot(testName, testDescription);
-		driver.get("https://stackoverflow.com/questions/46357858/java-cannot-copy-the-images-from-one-folder-to-a-word-document-located-in-diff");
 
-		Assert.assertTrue(false);
+	@Test(description = "This is test case Two  now",retryAnalyzer = retryFailedTCs.class)
+	public void TestCaseTwo() {
+		SetUpDriver();
+		setUplistener();
+
+			//		screenShotOb= new screenShots();
+			//		screenShotOb.takeFullScreenshot(testName,testDescription);
+			//		report.test.log(Status.PASS, "First Screen Ok");
+
+			eDriver.navigate().to("https://www.google.com/");
+			//		screenShotOb.takeFullScreenshot(testName,testDescription);
+			//		report.test.log(Status.PASS, "Second Screen Ok");
+
+			eDriver.navigate().to("https://stackoverflow.com/questions/6912169/eclipse-enable-autocomplete-content-assist");
+			//throw new SkipException("Skipppppp");
+	
+Assert.assertTrue(false);
+
 	}
-	//will skip
-	@Test(priority = 3,description = "Test case 3 False")
-public void TestCaseNo3() {
-		//Mandatory for screenshots
-//----------------------------------------------------------------------
-		//object from used methods class
-		evidenceAndScreenShots= new EvidenceAndScreenShots();
-		//getting the current test name
-		String testName =new Object(){}.getClass().getEnclosingMethod().getName() ;
-		// because the parameter for @ must be constant
-		String testDescription ="Test case 3 False";
-//----------------------------------------------------------------------
-		driver.manage().window().maximize();
-		evidenceAndScreenShots.takeFullScreenshot(testName, testDescription);
-		driver.get("https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/nio/file");
-		evidenceAndScreenShots.takeFullScreenshot(testName, testDescription);
-//		throw new SkipException("Skipeed");
-}
 
 	@AfterMethod
-	public void close(ITestResult result) throws InterruptedException {
-		try
-		{
-			if(result.getStatus() == ITestResult.SUCCESS)
-			{
-				evidenceAndScreenShots= new EvidenceAndScreenShots();
+	public synchronized void after(ITestResult result) {
+		try {
+			wordDocumentEvidence = new WordDocumentEvidence();
+			if (result.getStatus() == ITestResult.SUCCESS) {
+
+				screenShotOb= new screenShots();
 				String status = "Passed";
 				System.out.println(result.getName()+"passed **********");
-//rename the folder to new name with status
-				evidenceAndScreenShots.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
-//save screenshots to word evidence file
-				evidenceAndScreenShots.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
-			}
-
-			else if(result.getStatus() == ITestResult.FAILURE)
-			{
-				evidenceAndScreenShots= new EvidenceAndScreenShots();
+				//rename the folder to new name with status
+				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+				//save screenshots to word evidence file
+				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+				//passing to the report
+				report.test.log(Status.PASS, result.getMethod().getMethodName()+"  :  "+status);
+				//to add screenshot we need it's path and name
+				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
+				report.refreshReport();
+				TearDown();
+			} else if (result.getStatus() == ITestResult.FAILURE) {
+				screenShotOb= new screenShots();
 				String status = "Failed";
+				System.out.println(result.getName()+"Failed **********");
+				//rename the folder to new name with status
+				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+				//save screenshots to word evidence file
+				Thread.sleep(3000);
+				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+				//passing to the report
+				report.test.log(Status.FAIL,result.getMethod().getMethodName()+"  :  "+status);
+				//to add screenshot we need it's path and name
+				//           evidenceAndScreenShots.   test.addScreenCaptureFromPath("/Users/h-elfekey/Desktop/TakeEvidenceScreenShotsToWordDoc-main2/screenshots/TC001_Test Case One Say Hi_Passed/TC001_Test Case One Say Hi_21-07-2022 04-51-21.png");
+				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
+				report.refreshReport();
+				TearDown();
 
-				System.out.println("Failed ***********");
-//rename the folder to new name with status
-				evidenceAndScreenShots.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
-//save screenshots to word evidence file
-				evidenceAndScreenShots.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+			} else {
+				screenShotOb= new screenShots();
+				String status = "Skiped";
+				System.out.println(result.getName()+"Skiped **********");
+				//rename the folder to new name with status
+				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+				//save screenshots to word evidence file
+				wordDocumentEvidence .saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+
+				//passing to the report
+				report.test.log(Status.SKIP, result.getMethod().getMethodName()+"  :  "+status);
+				//to add screenshot we need it's path and name
+				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
+				report.refreshReport();
+				TearDown();
 
 			}
-
-			else if(result.getStatus() == ITestResult.SKIP ){
-				evidenceAndScreenShots= new EvidenceAndScreenShots();
-				String status = "Skipped";
-				System.out.println("Skipped***********");
-//rename the folder to new name with status
-				evidenceAndScreenShots.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
-//save screenshots to word evidence file
-				evidenceAndScreenShots.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
-
-			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		TearDown();
 	}
+
+
+
+	@AfterSuite
+	public void afterSuite() {
+		report.refreshReport();
+
+	}
+
+	/*##############
+   In a nutshell,
+
+   1-The ExtentHtmlReporter or "ExtentSparkReporter"  class is used for creating the HTML reports with it's configurations .
+   2-The ExtentReports class is used for creating the tests.
+   3-The ExtentTest class is used for generating the logs in the Extent Report.
+	 */
+
+
 
 
 }

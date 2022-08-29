@@ -5,7 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 
 
 public class BasePage {
-
+//this the access from my mac
 	public static WebDriver driver;
 	
 	public BasePage(WebDriver driver) {

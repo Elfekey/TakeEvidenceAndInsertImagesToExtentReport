@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="methods" thread-count="5"  >
+<suite name="Suite" parallel="tests" thread-count="5"  >
+
+
+
   <test name="Test" thread-count="2" >
-    <classes>
-      <class name="Tests.t1"/>
+     <classes>
+       <class name="Tests.testing">
+        <methods>
+        <include name="test1" />
+
+      </methods>
+       </class>
     </classes>
   </test> <!-- Test -->
+ 
+   <test name="Test2" thread-count="2" >
+     <classes>
+       <class name="Tests.testing">
+        <methods>
+        <include name="test2" />
+
+      </methods>
+       </class>
+    </classes>
+  </test> <!-- Test -->
+
+ 
+   <test name="Test3" thread-count="2" >
+     <classes>
+       <class name="Tests.t1">
+        <methods>
+        <include name="TestCaseTwo" />
+
+      </methods>
+       </class>
+    </classes>
+  </test> <!-- Test -->
+  
+ 
+ 
 </suite> <!-- Suite -->

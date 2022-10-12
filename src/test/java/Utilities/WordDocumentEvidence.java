@@ -84,6 +84,7 @@ public class WordDocumentEvidence  extends screenShots{
 			System.out.println("Images Inserted to word File");
 			}//if end
 			else {
+				
 				throw new Exception("The screenShots Folder Not Exist to add the images to Wrod File");
 			
 			}

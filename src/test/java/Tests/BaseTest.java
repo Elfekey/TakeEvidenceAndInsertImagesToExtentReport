@@ -4,43 +4,170 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 
-import Utilities.WebDriverEventListener;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+
+import Utilities.WebDriverEventListenerClass;
+import Utilities.WordDocumentEvidence;
+import Utilities.extentReport;
+import Utilities.screenShots;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseTest   {
-	protected    WebDriver driver;
+	public   WebDriver driver;
 	public  WebDriverWait wait;
-	
+
 	//event listener
-	 WebDriverEventListener webDriverEventListener ;
-	public static EventFiringWebDriver  eDriver;
+	WebDriverEventListenerClass webDriverEventListener ;
+	public   EventFiringWebDriver  eDriver;
+	public String tCName ;
+	public  String tCDescription;	
+
+
+	protected WordDocumentEvidence wordDocumentEvidence;
+//	protected screenShots screenShotsOb;
 	
-	//the before method
+	//exxtent report class object to use it in all childs
+	protected extentReport reportOb  = new extentReport();
+	//screenshots  class object to use it in all childs
+	screenShots screenShotsOb = new screenShots();
+	
+	//#######below we are using thread safe to keep every instance of the test and not override them!!!
+	public static ThreadLocal<ExtentTest> extentTesThreadLocal = new  ThreadLocal<ExtentTest>();
+	//#######End of thread local for thread safe 
+	
+	//the before suite
+	@BeforeSuite
 	public void setupSuite() {
 		WebDriverManager.chromedriver().setup();
+		//open report page in the beginning 
+		extentReport.setUpExtent();
+		reportOb.open_reportPage(); 
 	}
-	public synchronized void SetUpDriver() {
-		driver = new ChromeDriver();
+
+	@BeforeMethod
+	public synchronized void beforeMethod(ITestResult result) {
+		driver=new ChromeDriver();
 		driver.manage().window().maximize();
-//		wait = new WebDriverWait(driver, 20);//to start use it it must be here
+		//setting up webdriver listener for actions
+		//	//getting tc name and description
+		tCName =result.getMethod().getMethodName();
+		tCDescription=result.getMethod().getDescription();
+
+		//##Creating tests and set the test as thread safe
+		reportOb.test = extentReport.extent.createTest(tCName + "_" +tCDescription);
+		extentTesThreadLocal.set(reportOb.test);
+		//##End of Creating tests and set the test as thread safe
 
 	}
 	//after  test method  
 	public synchronized void TearDown() {
-		if (eDriver != null) {
-			eDriver.close();//close the current window !
+
+		if (driver != null) {
+			driver.close();//close the current window !
 		}
 	}
 
-	
-	//event listener implementation 	
-	public synchronized void setUplistener() {
 
-	webDriverEventListener = new WebDriverEventListener();
-	eDriver = new EventFiringWebDriver(this.driver);
-	eDriver.register(webDriverEventListener);
+	//event listener implementation 	
+	private synchronized void setUplistener() {
+
+		webDriverEventListener = new WebDriverEventListenerClass();
+		eDriver = new EventFiringWebDriver(this.driver);
+		eDriver.register(webDriverEventListener);
 
 	}
+
+
+
+
+	@AfterMethod
+	public synchronized void afterMethod(ITestResult result) {
+		try {
+			wordDocumentEvidence = new WordDocumentEvidence();
+			if (result.getStatus() == ITestResult.SUCCESS) {
+
+//				screenShotsOb= new screenShots();
+				
+				String status = "Passed";
+				System.out.println(result.getName()+" passed **********");
+				
+				//				//rename the folder to new name with status
+				screenShotsOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+				
+				//				//				//save screenshots to word evidence file
+				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+				
+				//  log the status to the html report and insert screenshot to it
+				//#########
+				extentTesThreadLocal.get().log(Status.PASS, result.getMethod().getMethodName()+"  :  "+status);
+				reportOb.InsertAllImagesToTheReport(result.getName(), result.getMethod().getDescription(),status);
+				//#######	
+				extentReport.extent.flush();
+				reportOb.refreshReport();
+				TearDown();
+			} else if (result.getStatus() == ITestResult.FAILURE) {
+//				screenShotsOb= new screenShots();
+				
+				String status = "Failed";
+				System.out.println(result.getName()+" Failed **********");
+				
+				//				rename the folder to new name with status
+				screenShotsOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+
+				//				//save screenshots to word evidence file
+				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+
+				//  log the status to the html report and insert screenshot to it
+				//########
+				extentTesThreadLocal.get().log(Status.FAIL,result.getMethod().getMethodName()+"  :  "+status);
+				extentTesThreadLocal.get().fail(result.getThrowable());	
+				reportOb.InsertAllImagesToTheReport(result.getName(), result.getMethod().getDescription(),status);
+				//########
+				extentReport.extent.flush();
+				reportOb.refreshReport();
+				TearDown();
+
+			} else {
+//				screenShotsOb= new screenShots();
+				
+				String status = "Skiped";
+				System.out.println(result.getName()+" Skiped **********");
+				
+				//rename the folder to new name with status
+				screenShotsOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+				
+				//save screenshots to word evidence file
+				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+			
+				//  log the status to the html report and insert screenshot to it
+				//#########
+				extentTesThreadLocal.get().log(Status.SKIP, result.getMethod().getMethodName()+"  :  "+status);
+				reportOb.InsertAllImagesToTheReport(result.getName(), result.getMethod().getDescription(),status);
+				//#######	
+				extentReport.extent.flush();
+				reportOb.refreshReport();
+				TearDown();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@AfterSuite
+	public void afterSuite() {
+
+		reportOb.refreshReport();
+
+	}
+
 
 }

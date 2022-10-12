@@ -7,9 +7,11 @@ import java.time.format.DateTimeFormatter;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+
 import Tests.BaseTest;
 
-public class screenShots  extends BaseTest {
+public class screenShots   {
 
 	//We must extend base test to use the driver !!!
 	//to set screenshots folder name and it's path for example D:/screenshots/.
@@ -30,22 +32,29 @@ public class screenShots  extends BaseTest {
 	 evidenceAndScreenShots.takeFullScreenshot(testName,testDescription);
 	 */
 	
-	public synchronized void takeFullScreenshot(String testCaseNameOnlyToCreateFolderForIt,String testcaseDescripion) {
+	public synchronized void takeFullScreenshot(String TCName,String TCDescription,WebDriver driver) {
 		try {
 		//taking the screenshot
-		TakesScreenshot screenshot = (TakesScreenshot) eDriver;
+		TakesScreenshot screenshot = (TakesScreenshot) driver;
 		File file = screenshot.getScreenshotAs(OutputType.FILE);
 	
 			// add the folder path and screenshot name
 			// i added the screen shot status with the path to make folder fo each run of each test case run
 			//the first part untill "/" is for the folder path after that is the screenshot name
-			FileUtils.copyFile(file, new File(fullDirectory + testCaseNameOnlyToCreateFolderForIt + "_"+testcaseDescripion+ "/" + testCaseNameOnlyToCreateFolderForIt + "_" + testcaseDescripion + "_" + GetCurrenDateAndTime() + ".png"));
+			FileUtils.copyFile(file, new File(fullDirectory + TCName + "_"+TCDescription+ "/" + TCName + "_" + TCDescription + "_" + GetCurrenDateAndTime() + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	// test screenshot
 
+	
+	
+	
+	
+	
+	//end test screenshot
 	//changeing the fodler name to the folder with status name
 		public synchronized void renameScreenShotsFolder(String tCName, String tCDescription, String status){
 			lastTimeOfTestCase = GetCurrenDateAndTime();

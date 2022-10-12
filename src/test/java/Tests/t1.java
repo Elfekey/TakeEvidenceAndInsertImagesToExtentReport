@@ -27,42 +27,45 @@ public class t1  extends BaseTest   {
    </dependency>
 	 * */
 	//global varibles
-	public static String tCName ;
-	public static String tCDescription;	
+	
 	//classes objects that we'll use
-	screenShots screenShotOb;
-	extentReport report;
-	WordDocumentEvidence wordDocumentEvidence;
 
 
 
-	@BeforeSuite
-	public synchronized void beforeSuite() {
-		setupSuite();
-		report = new extentReport();
-		report.setUpExtent();
-		report.open_reportPage();
 
-	}
-
-	@BeforeMethod
-	public synchronized void beforeMethod(ITestResult result) {
-//		setUpmethod();
-//		setUplistener();
-
-		//creating the test for the report
-		report.startTest(result.getMethod().getMethodName(),result.getMethod().getDescription());
-
-		//getting tc name and description
-		tCName =result.getMethod().getMethodName();
-		tCDescription=result.getMethod().getDescription();
-	}
+//	@BeforeSuite
+//	public synchronized void beforeSuite() {
+//		setupSuite();
+//		report = new extentReport();
+//		report.setUpExtent();
+//		report.open_reportPage();
+//
+//	}
+//
+//	@BeforeMethod
+//	public void beforeM(ITestResult result) {
+//	beforeMethod(result);
+//	}
+//	
+//	public synchronized void beforeMethod(ITestResult result) {
+////		setUpmethod();
+////		setUplistener();
+//
+//		//creating the test for the report
+//		report.startTest(result.getMethod().getMethodName(),result.getMethod().getDescription());
+//
+//		//getting tc name and description
+//		tCName =result.getMethod().getMethodName();
+//		tCDescription=result.getMethod().getDescription();
+//	
+//	}
 
 	@Test(description = "This is test case one now")
 	public void TestCaseOne() {
-		SetUpDriver();
-		setUplistener();
-		
+//		beforeMethod();
+//		setUplistener();
+//		report.startTest(tCName,tCDescription);
+
 			//		screenShotOb= new screenShots();
 			//		screenShotOb.takeFullScreenshot(testName,testDescription);
 			//		report.test.log(Status.PASS, "First Screen Ok")
@@ -76,92 +79,96 @@ public class t1  extends BaseTest   {
 
 	}
 
-	@Test(description = "This is test case Two  now",retryAnalyzer = retryFailedTCs.class)
+	@Test(description = "This is test case Two from class t1 now",retryAnalyzer = retryFailedTCs.class)
 	public void TestCaseTwo() {
-		SetUpDriver();
-		setUplistener();
+//		beforeMethod();
+//		setUplistener();
 
 			//		screenShotOb= new screenShots();
 			//		screenShotOb.takeFullScreenshot(testName,testDescription);
 			//		report.test.log(Status.PASS, "First Screen Ok");
 
-			eDriver.navigate().to("https://www.google.com/");
-			//		screenShotOb.takeFullScreenshot(testName,testDescription);
-			//		report.test.log(Status.PASS, "Second Screen Ok");
-
-			eDriver.navigate().to("https://stackoverflow.com/questions/6912169/eclipse-enable-autocomplete-content-assist");
-			//throw new SkipException("Skipppppp");
+			driver.navigate().to("https://www.google.com/");
+			screenShotsOb.takeFullScreenshot(tCName,tCDescription,driver);
+			driver.navigate().to("https://stackoverflow.com/questions/6912169/eclipse-enable-autocomplete-content-assist");
+			screenShotsOb.takeFullScreenshot(tCName,tCDescription,driver);
+			throw new SkipException("Skipppppp");
 	
-Assert.assertTrue(false);
+//Assert.assertTrue(false);
 
 	}
 
 	@AfterMethod
-	public synchronized void after(ITestResult result) {
-		try {
-			wordDocumentEvidence = new WordDocumentEvidence();
-			if (result.getStatus() == ITestResult.SUCCESS) {
-
-				screenShotOb= new screenShots();
-				String status = "Passed";
-				System.out.println(result.getName()+"passed **********");
-				//rename the folder to new name with status
-				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
-				//save screenshots to word evidence file
-				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
-				//passing to the report
-				report.test.log(Status.PASS, result.getMethod().getMethodName()+"  :  "+status);
-				//to add screenshot we need it's path and name
-				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
-				report.refreshReport();
-				TearDown();
-			} else if (result.getStatus() == ITestResult.FAILURE) {
-				screenShotOb= new screenShots();
-				String status = "Failed";
-				System.out.println(result.getName()+"Failed **********");
-				//rename the folder to new name with status
-				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
-				//save screenshots to word evidence file
-				Thread.sleep(3000);
-				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
-				//passing to the report
-				report.test.log(Status.FAIL,result.getMethod().getMethodName()+"  :  "+status);
-				//to add screenshot we need it's path and name
-				//           evidenceAndScreenShots.   test.addScreenCaptureFromPath("/Users/h-elfekey/Desktop/TakeEvidenceScreenShotsToWordDoc-main2/screenshots/TC001_Test Case One Say Hi_Passed/TC001_Test Case One Say Hi_21-07-2022 04-51-21.png");
-				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
-				report.refreshReport();
-				TearDown();
-
-			} else {
-				screenShotOb= new screenShots();
-				String status = "Skiped";
-				System.out.println(result.getName()+"Skiped **********");
-				//rename the folder to new name with status
-				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
-				//save screenshots to word evidence file
-				wordDocumentEvidence .saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
-
-				//passing to the report
-				report.test.log(Status.SKIP, result.getMethod().getMethodName()+"  :  "+status);
-				//to add screenshot we need it's path and name
-				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
-				report.refreshReport();
-				TearDown();
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	public void afterM(ITestResult result) {
+		afterMethod( result);
 	}
+//	public synchronized void afterMethod(ITestResult result) {
+		
+//		try {
+//			wordDocumentEvidence = new WordDocumentEvidence();
+//			if (result.getStatus() == ITestResult.SUCCESS) {
+//
+//				screenShotOb= new screenShots();
+//				String status = "Passed";
+//				System.out.println(result.getName()+"passed **********");
+//				//rename the folder to new name with status
+//				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+//				//save screenshots to word evidence file
+//				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+//				//passing to the report
+//				report.test.log(Status.PASS, result.getMethod().getMethodName()+"  :  "+status);
+//				//to add screenshot we need it's path and name
+//				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
+//				report.refreshReport();
+//				TearDown();
+//			} else if (result.getStatus() == ITestResult.FAILURE) {
+//				screenShotOb= new screenShots();
+//				String status = "Failed";
+//				System.out.println(result.getName()+"Failed **********");
+//				//rename the folder to new name with status
+//				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+//				//save screenshots to word evidence file
+//				Thread.sleep(3000);
+//				wordDocumentEvidence.saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+//				//passing to the report
+//				report.test.log(Status.FAIL,result.getMethod().getMethodName()+"  :  "+status);
+//				//to add screenshot we need it's path and name
+//				//           evidenceAndScreenShots.   test.addScreenCaptureFromPath("/Users/h-elfekey/Desktop/TakeEvidenceScreenShotsToWordDoc-main2/screenshots/TC001_Test Case One Say Hi_Passed/TC001_Test Case One Say Hi_21-07-2022 04-51-21.png");
+//				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
+//				report.refreshReport();
+//				TearDown();
+//
+//			} else {
+//				screenShotOb= new screenShots();
+//				String status = "Skiped";
+//				System.out.println(result.getName()+"Skiped **********");
+//				//rename the folder to new name with status
+//				screenShotOb.renameScreenShotsFolder(result.getName(), result.getMethod().getDescription(),status);
+//				//save screenshots to word evidence file
+//				wordDocumentEvidence .saveAllScreenShotsIntoWordDocument(result.getName(), result.getMethod().getDescription(),status);
+//
+//				//passing to the report
+//				report.test.log(Status.SKIP, result.getMethod().getMethodName()+"  :  "+status);
+//				//to add screenshot we need it's path and name
+//				report.InsertAllImagesToTheReport(result.getName(),result.getMethod().getDescription(),status);
+//				report.refreshReport();
+//				TearDown();
+//
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
+//	}
 
 
 
-	@AfterSuite
-	public void afterSuite() {
-		report.refreshReport();
-
-	}
+//
+//	@AfterSuite
+//	public void afterSuite() {
+//		report.refreshReport();
+//
+//	}
 
 	/*##############
    In a nutshell,

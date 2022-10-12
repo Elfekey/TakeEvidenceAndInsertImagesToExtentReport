@@ -5,7 +5,10 @@
     <classes>
       <class name="Tests.testing">
         <methods>
-          <include name="testCase"/>
+          <include name="beforeMethod"/>
+          <include name="setupSuite"/>
+          <include name="afterMethod"/>
+          <include name="test1"/>
         </methods>
       </class> <!-- Tests.testing -->
     </classes>
